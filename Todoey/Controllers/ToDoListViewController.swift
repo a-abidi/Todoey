@@ -98,7 +98,7 @@ extension ToDoListViewController: UISearchBarDelegate {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
         // title should contain what is in the search bar
-        let predicate = NSPredicate(format: "title CONTAINS %@", searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         request.predicate = predicate
         
         // titles should come back in ascending alphabetical order
