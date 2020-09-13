@@ -71,17 +71,7 @@ class ToDoListViewController: UITableViewController {
             newItem.title = textField.text!
             self.itemArray.append(newItem)
                         
-            let encoder = PropertyListEncoder()
-            
-            do {
-                let data = try encoder.encode(self.itemArray)
-                try data.write(to: self.dataFilePath!)
-            } catch {
-                print(error)
-            }
-            
-            
-            self.tableView.reloadData() // Reload table when new item added
+            saveItems() // Reload table when new item added
         }
         
         alert.addAction(action)
@@ -91,6 +81,19 @@ class ToDoListViewController: UITableViewController {
         }
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    func saveItems() {
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(self.itemArray)
+            try data.write(to: self.dataFilePath!)
+        } catch {
+            print(error)
+        }
+        
+        self.tableView.reloadData()
     }
     
 }
