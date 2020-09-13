@@ -13,6 +13,12 @@ class ToDoListViewController: UITableViewController {
     
     var itemArray = [Item]()
     
+    var selectedCategory: Category? {
+        didSet{
+            loadItems()
+        }
+    }
+    
     let context = ((UIApplication).shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
@@ -56,6 +62,7 @@ class ToDoListViewController: UITableViewController {
             newItem.title = textField.text!
             newItem.done = false
             
+            newItem.parentCategory = self.selectedCategory
             self.itemArray.append(newItem)
             
             self.saveItems() // Reload table when new item added
@@ -84,7 +91,6 @@ class ToDoListViewController: UITableViewController {
     
     // Takes the plist file and decodes it into our itemArray
     func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
-        
         do {
             itemArray = try context.fetch(request)
         } catch {
