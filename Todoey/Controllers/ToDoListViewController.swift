@@ -90,7 +90,16 @@ class ToDoListViewController: UITableViewController {
     }
     
     // Takes the plist file and decodes it into our itemArray
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+                        
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -106,13 +115,13 @@ extension ToDoListViewController: UISearchBarDelegate {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
         
         // title should contain what is in the search bar
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         
         // titles should come back in ascending alphabetical order
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         // run request and fetch the results
-        loadItems(with: request)
+        loadItems(with: request, predicate: predicate)
         
         tableView.reloadData()
     }
