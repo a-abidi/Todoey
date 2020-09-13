@@ -12,15 +12,15 @@ class ToDoListViewController: UITableViewController {
     
     var itemArray = [Item]()
     
-    // Persistent data
-    let defaults = UserDefaults.standard
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        if let items = defaults.array(forKey: "ToDoListArray") as? [Item] {
-            itemArray = items
-        }
+                
+//        // Do any additional setup after loading the view.
+//        if let items = defaults.array(forKey: "ToDoListArray") as? [Item] {
+//            itemArray = items
+//        }
         
         let newItem = Item()
         newItem.title = "Do something"
@@ -70,9 +70,16 @@ class ToDoListViewController: UITableViewController {
             let newItem = Item()
             newItem.title = textField.text!
             self.itemArray.append(newItem)
+                        
+            let encoder = PropertyListEncoder()
             
-            // Locally identifying the the item array with "ToDoListArray"
-            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            do {
+                let data = try encoder.encode(self.itemArray)
+                try data.write(to: self.dataFilePath!)
+            } catch {
+                print(error)
+            }
+            
             
             self.tableView.reloadData() // Reload table when new item added
         }
