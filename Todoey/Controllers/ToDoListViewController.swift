@@ -84,7 +84,7 @@ class ToDoListViewController: UITableViewController {
     
     // Takes the plist file and decodes it into our itemArray
     func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
-
+        
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -114,6 +114,11 @@ extension ToDoListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
             loadItems()
+            
+            DispatchQueue.main.async {
+                // Tells the search bar not to be active anymore
+                searchBar.resignFirstResponder()
+            }
         }
     }
 }
