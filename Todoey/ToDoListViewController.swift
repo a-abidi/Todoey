@@ -15,7 +15,7 @@ class ToDoListViewController: UITableViewController {
         // Do any additional setup after loading the view.
     }
     
-    let itemArray = ["do thing 1", "do thing 2", "do thing 3"]
+    var itemArray = ["do thing 1", "do thing 2", "do thing 3"]
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,14 +46,23 @@ class ToDoListViewController: UITableViewController {
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
+        var textField = UITextField()
+        
         // An alert requires a controller and an action
         
         let alert = UIAlertController(title: "Add New Item", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in print("Item added") // When the user clicks 'Add Item' on the alert
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            print("Item added") // When user clicks 'Add Item' on the alert
+            self.itemArray.append(textField.text ?? ">:(")
+            self.tableView.reloadData() // Reload table when new item added
         }
         
         alert.addAction(action)
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
         
         present(alert, animated: true, completion: nil)
     }
