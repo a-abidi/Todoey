@@ -9,11 +9,18 @@
 import UIKit
 import RealmSwift
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableViewController {
     
     let realm = try! Realm()
     
     var categories : Results<Category>? // auto-updating container type in Realm
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.rowHeight = 80.0
+        loadCategories()
+    }
+    
     
     @IBAction func addButtonPressed(_ sender: Any) {
         var textField = UITextField()
@@ -25,7 +32,7 @@ class CategoryViewController: UITableViewController {
             
             let newCategory = Category()
             newCategory.name = textField.text!
-        
+            
             self.save(category: newCategory) // Save the data
         }
         
@@ -38,11 +45,6 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        loadCategories()
-    }
-    
     //MARK:- TableView Data Source Methods
     
     // Returns the number of categories present
@@ -52,7 +54,7 @@ class CategoryViewController: UITableViewController {
     
     // Creates a reusable cell and adds it at index path
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
         return cell
     }
@@ -87,12 +89,23 @@ class CategoryViewController: UITableViewController {
     }
     
     func loadCategories() {
-        
         // Pulls out all the items inside our realm which are Category objects!
         categories = realm.objects(Category.self)
-        
-        
         tableView.reloadData()
+    }
+    
+    //MARK:- Data Deletion Section
+    
+    override func updateModel(at indexPath: IndexPath) {
+        if let categoryForDeletion = self.categories?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(categoryForDeletion)
+                }
+            } catch {
+                print("Error deleting category, \(error)")
+            }
+        }
     }
     
 }
