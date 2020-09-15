@@ -58,6 +58,8 @@ class ToDoListViewController: UITableViewController {
             }
         }
         
+        tableView.reloadData()
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -82,6 +84,7 @@ class ToDoListViewController: UITableViewController {
                         // Every new item starts as not done
                         newItem.title = textField.text!
                         newItem.done = false
+                        newItem.dateCreated = Date()
                         
                         currentCategory.items.append(newItem)
                         
@@ -113,27 +116,18 @@ class ToDoListViewController: UITableViewController {
     // Takes the plist file and decodes it into our itemArray
     func loadItems() {
         
-        todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
+        todoItems = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
         
         tableView.reloadData()
     }
 }
 
 extension ToDoListViewController: UISearchBarDelegate {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        // title should contain what is in the search bar
-//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//        // titles should come back in ascending alphabetical order
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        // run request and fetch the results
-//        loadItems(with: request, predicate: predicate)
-//
-//        tableView.reloadData()
-//    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        todoItems = todoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "title", ascending: true)
+
+        tableView.reloadData()
+    }
 //
 //    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 //        if searchBar.text?.count == 0 {
