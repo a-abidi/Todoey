@@ -29,9 +29,8 @@
                             <outlet property="delegate" destination="W8h-3S-Per" id="oez-kn-MXo"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Todoey" id="srY-ua-7FX">
+                    <navigationItem key="navigationItem" title="Todoey" largeTitleDisplayMode="always" id="srY-ua-7FX">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ma7-1p-FeN">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="W8h-3S-Per" id="qHt-hO-O3P"/>
                             </connections>
@@ -78,12 +77,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Your ToDo's" id="D4m-bO-m9O">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="9tK-KW-aQa">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="0NZ-QQ-nei" id="zKb-HS-HuM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="2qt-SQ-OVm" id="ywK-lM-vaD"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SQi-mW-NSb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -94,15 +95,18 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RhO-3x-a4t" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="7AF-n1-wPW">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="7AF-n1-wPW">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="HWZ-kv-Hra">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="W8h-3S-Per" kind="relationship" relationship="rootViewController" id="Ldw-yc-gfR"/>
                     </connections>
