@@ -46,6 +46,18 @@ class ToDoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         //        saveItems()
+        
+        if let item = todoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                    // toggle done status (i.e. checkmark)
+                    item.done = !item.done
+                }
+            } catch {
+                print("Error updating done status: \(error)")
+            }
+        }
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -122,7 +134,7 @@ extension ToDoListViewController: UISearchBarDelegate {
 //
 //        tableView.reloadData()
 //    }
-//    
+//
 //    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 //        if searchBar.text?.count == 0 {
 //            loadItems()
